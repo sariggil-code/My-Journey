@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Countries — Where I Have Been</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/data.js"></script>
+<script src="assets/site.js"></script>
+</head>
+<body>
+<main class="wrap">
+  <div class="page-head">
+    <div class="mono">· The full list ·</div>
+    <h1><span class="grad">Countries</span></h1>
+    <p>All 61, grouped by continent. Search by name or filter by what I went looking for.</p>
+  </div>
+  <div class="toolbar">
+    <input class="search" id="q" type="search" placeholder="Search a country…" aria-label="Search a country">
+    <div class="chips" id="themes"></div>
+  </div>
+  <div id="list"></div>
+</main>
+<script>
+(function () {
+  var T = TRAVEL.countries, theme = (location.hash || '').slice(1), q = '';
+  if (!THEMES[theme]) theme = '';
+  var themesEl = document.getElementById('themes'), list = document.getElementById('list');
+  function draw() {
+    themesEl.innerHTML = '<button class="chip' + (theme ? '' : ' on') + '" data-k="">Everything</button>' + Object.keys(THEMES).map(function (k) {
+      return '<button class="chip' + (theme === k ? ' on' : '') + '" data-k="' + k + '">' + THEMES[k] + ' <b>' + T.filter(function (c) { return c.themes.indexOf(k) >= 0; }).length + '</b></button>';
+    }).join('');
+    var out = '', total = 0, s = q.trim().toLowerCase();
+    CONT_ORDER.forEach(function (k) {
+      var cs = T.filter(function (c) {
+        return c.cont === k && (!theme || c.themes.indexOf(theme) >= 0) && (!s || c.en.toLowerCase().indexOf(s) >= 0 || c.he.indexOf(q.trim()) >= 0);
+      }).sort(function (a, b) { return a.en.localeCompare(b.en); });
+      if (!cs.length) return;
+      total += cs.length;
+      out += '<div class="cont-h" style="--c:var(' + CONT[k].v + ')"><i></i><h2>' + CONT[k].name + '</h2><span>' + cs.length + '</span></div><div class="grid">' + cs.map(function (c) {
+        return '<article class="card ccard" style="--c:' + cvar(c) + '">' +
+          (c.photo ? '<div class="ph" role="img" aria-label="Photo from ' + esc(c.en) + '" style="background-image:url(assets/thumbs/' + c.photo.f + ')"></div>'
+                   : '<div class="ph none"><img src="assets/flags/' + c.a2 + '.svg" alt=""></div>') +
+          '<div class="stripe"></div><div class="body"><h3>' + flag(c) + esc(c.en) + '</h3><div class="he" dir="rtl" style="text-align:left">' + esc(c.he) + '</div>' +
+          '<div class="yrs">' + yearsText(c) + '</div>' +
+          (c.themes.length ? '<div class="tags">' + c.themes.map(function (t) { return '<span class="tag">' + THEMES[t] + '</span>'; }).join('') + '</div>' : '') +
+          '</div></article>';
+      }).join('') + '</div>';
+    });
+    list.innerHTML = total ? out : '<div class="empty">No country matches that search.</div>';
+  }
+  themesEl.addEventListener('click', function (e) { var b = e.target.closest('.chip'); if (!b) return; theme = b.dataset.k; history.replaceState(null, '', theme ? '#' + theme : location.pathname); draw(); });
+  document.getElementById('q').addEventListener('input', function (e) { q = e.target.value; draw(); });
+  draw();
+})();
+</script>
+</body>
+</html>

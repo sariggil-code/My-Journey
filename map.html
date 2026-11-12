@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Map — Where I Have Been</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/data.js"></script>
+<script src="assets/map-data.js"></script>
+<script src="assets/site.js"></script>
+</head>
+<body>
+<main class="wrap">
+  <div class="page-head">
+    <div class="mono">· 61 countries · 5 continents ·</div>
+    <h1><span class="grad">The Map</span></h1>
+    <p>Every country I have visited, coloured by continent. Tap a country to see when I was there.</p>
+  </div>
+  <div class="chips" id="legend" style="margin-bottom:20px"></div>
+  <div class="map-shell">
+    <div class="card map-box"><svg id="map" viewBox="40 225 1530 800" role="img" aria-label="World map of visited countries"></svg></div>
+    <aside class="card info" id="info" aria-live="polite"></aside>
+  </div>
+</main>
+<script>
+(function () {
+  var T = TRAVEL.countries, svg = document.getElementById('map'), NS = 'http://www.w3.org/2000/svg';
+  var byIso = {};
+  T.forEach(function (c) { (byIso[c.iso] = byIso[c.iso] || []).push(c); });
+  var html = '<path class="grat" d="' + (MAPDATA.grat || '') + '"/>';
+  MAPDATA.paths.forEach(function (p) {
+    var cs = byIso[p.id];
+    html += cs ? '<path class="v" data-iso="' + p.id + '" data-cont="' + cs[0].cont + '" style="fill:' + cvar(cs[0]) + '" d="' + p.d + '"><title>' + cs.map(function (c) { return c.en; }).join(' / ') + '</title></path>'
+               : '<path class="land" d="' + p.d + '"/>';
+  });
+  T.forEach(function (c, i) {
+    html += '<circle class="dot" data-i="' + i + '" data-cont="' + c.cont + '" cx="' + c.x + '" cy="' + c.y + '" r="3.6" tabindex="0" role="button" aria-label="' + esc(c.en) + '"><title>' + esc(c.en) + '</title></circle>';
+  });
+  svg.innerHTML = html;
+
+  var info = document.getElementById('info'), filter = null;
+  function show(c) {
+    svg.querySelectorAll('.sel').forEach(function (e) { e.classList.remove('sel'); });
+    if (!c) {
+      info.innerHTML = '<div class="mono">Pick a country</div><h3 style="margin-top:8px">61 stops</h3><p style="color:var(--muted)">Tap any coloured country or dot on the map. Small countries such as Monaco, the Vatican and Singapore are easiest to hit by their dot.</p>';
+      return;
+    }
+    var p = svg.querySelector('path[data-iso="' + c.iso + '"]'); if (p) p.classList.add('sel');
+    info.innerHTML = (c.photo ? '<img class="ph" src="assets/thumbs/' + c.photo.f + '" alt="Photo from ' + esc(c.en) + '">' : '') +
+      '<h3>' + flag(c) + esc(c.en) + '</h3><div class="he" dir="rtl" style="text-align:left">' + esc(c.he) + '</div>' +
+      '<div class="tags"><span class="tag c" style="--c:' + cvar(c) + '">' + CONT[c.cont].name + '</span>' +
+      c.themes.map(function (t) { return '<span class="tag">' + THEMES[t] + '</span>'; }).join('') + '</div>' +
+      '<div class="yrs">' + (c.years.length ? c.years.length + (c.years.length > 1 ? ' visits' : ' visit') + '<br>' + c.years.join(' · ') : 'Home base') + '</div>';
+  }
+  svg.addEventListener('click', function (e) {
+    var t = e.target;
+    if (t.classList.contains('dot')) show(T[+t.dataset.i]);
+    else if (t.classList.contains('v')) show(byIso[t.dataset.iso][0]);
+  });
+  svg.addEventListener('keydown', function (e) { if ((e.key === 'Enter' || e.key === ' ') && e.target.classList.contains('dot')) { e.preventDefault(); show(T[+e.target.dataset.i]); } });
+
+  var legend = document.getElementById('legend');
+  function drawLegend() {
+    legend.innerHTML = '<button class="chip' + (filter ? '' : ' on') + '" data-k="">All <b>' + T.length + '</b></button>' + CONT_ORDER.map(function (k) {
+      var n = T.filter(function (c) { return c.cont === k; }).length;
+      return '<button class="chip' + (filter === k ? ' on' : '') + '" data-k="' + k + '" style="--c:var(' + CONT[k].v + ')"><i></i>' + CONT[k].name + ' <b>' + n + '</b></button>';
+    }).join('');
+    svg.querySelectorAll('[data-cont]').forEach(function (e) { e.classList.toggle('dim', !!filter && e.dataset.cont !== filter); });
+  }
+  legend.addEventListener('click', function (e) { var b = e.target.closest('.chip'); if (!b) return; filter = b.dataset.k || null; drawLegend(); });
+  drawLegend(); show(null);
+})();
+</script>
+</body>
+</html>

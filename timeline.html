@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Timeline — Where I Have Been</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/data.js"></script>
+<script src="assets/site.js"></script>
+</head>
+<body>
+<main class="wrap">
+  <div class="page-head">
+    <div class="mono" id="span"></div>
+    <h1><span class="grad">Timeline</span></h1>
+    <p>Forty years, year by year. A highlighted country marks the first time I set foot there.</p>
+  </div>
+  <div class="chips" style="margin-bottom:30px">
+    <button class="chip on" id="ord-new">Newest first</button>
+    <button class="chip" id="ord-old">Oldest first</button>
+  </div>
+  <div class="tl" id="tl"></div>
+</main>
+<script>
+(function () {
+  var T = TRAVEL.countries, y0 = TRAVEL.years[0], y1 = TRAVEL.years[TRAVEL.years.length - 1], desc = true;
+  document.getElementById('span').textContent = '· ' + y0 + ' — ' + y1 + ' ·';
+  function draw() {
+    var years = [];
+    for (var y = y0; y <= y1; y++) years.push(y);
+    if (desc) years.reverse();
+    var out = '', gap = [];
+    function flush() {
+      if (!gap.length) return;
+      var a = Math.min.apply(null, gap), b = Math.max.apply(null, gap);
+      out += '<div class="tl-row gap"><h3>' + (a === b ? a : (desc ? b + ' – ' + a : a + ' – ' + b)) + ' <small>no trips recorded</small></h3></div>';
+      gap = [];
+    }
+    years.forEach(function (y) {
+      var cs = T.filter(function (c) { return c.years.indexOf(y) >= 0; });
+      if (!cs.length) { gap.push(y); return; }
+      flush();
+      out += '<div class="tl-row"><h3>' + y + ' <small>' + cs.length + (cs.length > 1 ? ' countries' : ' country') + '</small></h3><div class="tl-items">' + cs.map(function (c) {
+        var first = c.years[0] === y;
+        return '<span class="tl-item' + (first ? ' new' : '') + '" style="--c:' + cvar(c) + '">' + flag(c) + esc(c.en) + (first ? '<em>FIRST</em>' : '') + '</span>';
+      }).join('') + '</div></div>';
+    });
+    flush();
+    document.getElementById('tl').innerHTML = out;
+  }
+  var bn = document.getElementById('ord-new'), bo = document.getElementById('ord-old');
+  bn.onclick = function () { desc = true; bn.classList.add('on'); bo.classList.remove('on'); draw(); };
+  bo.onclick = function () { desc = false; bo.classList.add('on'); bn.classList.remove('on'); draw(); };
+  draw();
+})();
+</script>
+</body>
+</html>

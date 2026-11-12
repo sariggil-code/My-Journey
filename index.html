@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Where I Have Been — Personal Travel Archive</title>
+<meta name="description" content="61 countries, 5 continents, 40 years on the road. A personal travel archive: the film, the map, the photos and what comes next.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/data.js"></script>
+<script src="assets/site.js"></script>
+</head>
+<body>
+<main>
+  <div class="wrap hero">
+    <div class="mono">· Personal Travel Archive ·</div>
+    <h1><span class="grad">Where I Have Been</span></h1>
+    <div class="sub">A passport of memories</div>
+    <div class="stats" id="stats"></div>
+  </div>
+
+  <section class="wrap" id="film">
+    <div class="card film">
+      <video controls playsinline preload="none" poster="assets/video/my-world-journey.jpg" src="assets/video/my-world-journey.mp4"></video>
+      <div class="film-cap">
+        <div><div class="mono">The film · 2:42</div><h2 style="font-size:1.5rem;margin-top:4px">My World Journey</h2></div>
+        <a class="btn ghost" href="videos.html">More videos →</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <div class="sec-title"><h2>Explore the archive</h2><span class="mono">Six ways in</span></div>
+    <div class="tiles" id="tiles"></div>
+  </section>
+
+  <section class="wrap">
+    <div class="sec-title"><h2>By continent</h2><a class="mono" href="countries.html">All countries →</a></div>
+    <div class="card" style="padding:26px"><div class="bars" id="bars"></div></div>
+  </section>
+
+  <section class="wrap">
+    <div class="sec-title"><h2>What I look for</h2><span class="mono">Tap a theme</span></div>
+    <div class="chips" id="themes" style="justify-content:flex-start"></div>
+  </section>
+</main>
+<script>
+(function () {
+  var T = TRAVEL.countries, visits = T.reduce(function (s, c) { return s + c.years.length; }, 0);
+  var y0 = TRAVEL.years[0], y1 = TRAVEL.years[TRAVEL.years.length - 1];
+  document.getElementById('stats').innerHTML = [[T.length, 'Countries'], [CONT_ORDER.length, 'Continents'], [visits, 'Visits'], [y1 - y0, 'Years']]
+    .map(function (s) { return '<div class="card stat"><b class="grad">' + s[0] + '</b><span>' + s[1] + '</span></div>'; }).join('');
+  var ph = function (en) { var c = T.filter(function (c) { return c.en === en && c.photo; })[0]; return c ? 'assets/thumbs/' + c.photo.f : 'assets/img/museum.jpg'; };
+  var tiles = [['map.html', 'The Map', 'Every country, coloured by continent', 'assets/img/museum.jpg'],
+    ['countries.html', 'Countries', 'All 61, with flags, years and themes', ph('Bhutan')],
+    ['timeline.html', 'Timeline', y0 + ' to ' + y1 + ', year by year', ph('Argentina')],
+    ['gallery.html', 'Gallery', 'One photo from each stop', ph('Ethiopia')],
+    ['videos.html', 'Videos', 'The film and moments in motion', 'assets/video/lion-cubs.jpg'],
+    ['2027.html', '2027', 'The unconquered horizon', 'assets/img/yalla-2027.jpg']];
+  document.getElementById('tiles').innerHTML = tiles.map(function (t) {
+    return '<a class="tile" href="' + t[0] + '"><img src="' + t[3] + '" alt="" loading="lazy"><div><h3>' + t[1] + '</h3><p>' + t[2] + '</p></div></a>';
+  }).join('');
+  var max = Math.max.apply(null, CONT_ORDER.map(function (k) { return T.filter(function (c) { return c.cont === k; }).length; }));
+  document.getElementById('bars').innerHTML = CONT_ORDER.map(function (k) {
+    var n = T.filter(function (c) { return c.cont === k; }).length;
+    return '<div class="bar" style="--c:var(' + CONT[k].v + ')"><span>' + CONT[k].name + '</span><div class="track"><div class="fill" style="width:' + (n / max * 100) + '%"></div></div><b>' + n + '</b></div>';
+  }).join('');
+  document.getElementById('themes').innerHTML = Object.keys(THEMES).map(function (k) {
+    return '<a class="chip" style="text-decoration:none" href="countries.html#' + k + '">' + THEMES[k] + '</a>';
+  }).join('');
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Videos — Where I Have Been</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+<script src="assets/site.js"></script>
+</head>
+<body>
+<main class="wrap">
+  <div class="page-head">
+    <div class="mono">· Moments from the road, in motion ·</div>
+    <h1><span class="grad">Videos</span></h1>
+  </div>
+
+  <section style="padding-top:0">
+    <div class="card film">
+      <video controls playsinline preload="none" poster="assets/video/my-world-journey.jpg" src="assets/video/my-world-journey.mp4"></video>
+      <div class="film-cap"><div><div class="mono">The film · 2:42</div><h2 style="font-size:1.5rem;margin-top:4px">My World Journey</h2></div></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-title"><h2>Short clips</h2></div>
+    <div class="vgrid">
+      <div class="card vcard"><video controls playsinline preload="none" poster="assets/video/mapping-61-countries.jpg" src="assets/video/mapping-61-countries.mp4"></video><h3>Mapping 61 countries across five continents</h3></div>
+      <div class="card vcard"><video controls playsinline preload="none" poster="assets/video/lion-cubs.jpg" src="assets/video/lion-cubs.mp4"></video><h3>Lion cubs</h3></div>
+      <div class="card vcard"><video controls playsinline preload="none" poster="assets/video/warriors-dance.jpg" src="assets/video/warriors-dance.mp4"></video><h3>Warriors dance</h3></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-title"><h2>On YouTube</h2><span class="mono">Opens in a new tab</span></div>
+    <div class="vgrid" id="yt"></div>
+  </section>
+</main>
+<script>
+(function () {
+  var YT = [["RWDRDbPfaOg", "Bushman girl translates click language, Namibia"], ["yDnAKcZTF_c", "Himba Tribal Women"], ["FmPDaibZe98", "Amazing bull jump ceremony - Ethiopia"],
+    ["WoDUfs6m-io", "Hadzabe, Eating hunted monkey"], ["lKOKhHz92FA", "Mong ngoi Monks, morning ceremony, Laos"], ["mbR216zcezk", "Sunday morning at a local Church, Namibia"],
+    ["WhEmX-jVmkM", "Wildebeest crossing Mara River"], ["M80bL83NgTM", "Cheetah and cubs hunting, Lake Ndutu, Tanzania"], ["SUgSQ3pa7Ag", "Bull jump ceremony"], ["q9QhXOUp5Ec", "Bear eating dessert, Kamchatka"]];
+  document.getElementById('yt').innerHTML = YT.map(function (v) {
+    return '<a class="card vcard" href="https://www.youtube.com/watch?v=' + v[0] + '" target="_blank" rel="noopener"><div class="th" style="background-image:url(https://img.youtube.com/vi/' + v[0] + '/hqdefault.jpg)"></div><h3>' + esc(v[1]) + '</h3></a>';
+  }).join('');
+})();
+</script>
+</body>
+</html>
