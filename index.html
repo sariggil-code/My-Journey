@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Where I Have Been — Personal Travel Archive</title>
-<meta name="description" content="61 countries, 5 continents, 40 years on the road. A personal travel archive: the film, the map, the photos and what comes next.">
+<meta name="description" content="61 countries, 5 continents, 4 decades on the road. A personal travel archive: the film, the map, the photos and what comes next.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
@@ -49,7 +49,7 @@
 (function () {
   var T = TRAVEL.countries, visits = T.reduce(function (s, c) { return s + c.years.length; }, 0);
   var y0 = TRAVEL.years[0], y1 = TRAVEL.years[TRAVEL.years.length - 1];
-  document.getElementById('stats').innerHTML = [[T.length, 'Countries'], [CONT_ORDER.length, 'Continents'], [visits, 'Visits'], [y1 - y0, 'Years']]
+  document.getElementById('stats').innerHTML = [[T.length, 'Countries'], [CONT_ORDER.length, 'Continents'], [visits, 'Visits'], [Math.round((y1 - y0) / 10), 'Decades']]
     .map(function (s) { return '<div class="card stat"><b class="grad">' + s[0] + '</b><span>' + s[1] + '</span></div>'; }).join('');
   var ph = function (en) { var c = T.filter(function (c) { return c.en === en && c.photo; })[0]; return c ? 'assets/thumbs/' + c.photo.f : 'assets/img/museum.jpg'; };
   var tiles = [['map.html', 'The Map', 'Every country, coloured by continent', 'assets/img/museum.jpg'],
