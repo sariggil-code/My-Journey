@@ -5,70 +5,403 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Where I Have Been — Personal Travel Archive</title>
 <meta name="description" content="61 countries, 5 continents, 4 decades on the road. A personal travel archive: the film, the map, the photos and what comes next.">
+<meta name="theme-color" content="#0a0908">
+<meta property="og:title" content="Where I Have Been">
+<meta property="og:description" content="61 countries, 5 continents, 4 decades on the road.">
+<meta property="og:image" content="assets/video/my-world-journey.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="assets/data.js"></script>
 <script src="assets/site.js"></script>
 </head>
-<body>
+<body class="home">
 <main>
-  <div class="wrap hero">
-    <div class="mono">· Personal Travel Archive ·</div>
-    <h1><span class="grad">Where I Have Been</span></h1>
-    <div class="sub">A passport of memories</div>
-    <div class="stats" id="stats"></div>
-  </div>
-
-  <section class="wrap" id="film">
-    <div class="card film">
-      <video controls playsinline preload="none" poster="assets/video/my-world-journey.jpg" src="assets/video/my-world-journey.mp4"></video>
-      <div class="film-cap">
-        <div><div class="mono">The film · 2:42</div><h2 style="font-size:1.5rem;margin-top:4px">My World Journey</h2></div>
-        <a class="btn ghost" href="videos.html">More videos →</a>
+  <!-- HERO: drifting wall of photos behind a huge title -->
+  <section class="hero" aria-label="Intro">
+    <div class="hero-wall" id="wall" aria-hidden="true"></div>
+    <div class="wrap hero-in">
+      <div class="kicker mono"><span class="line"></span><span id="kick">Personal travel archive</span></div>
+      <h1 id="title"><span class="w"><span>Where</span></span> <span class="w"><span>I</span></span><br><span class="w"><span>have</span></span> <span class="w"><span><em>been</em></span></span></h1>
+      <div class="hero-row">
+        <p id="hero-p">A passport of memories. Four decades on the road, one frame from every stop.</p>
+        <div class="btns">
+          <a class="btn" href="#film">Watch the film <span class="arr">▶</span></a>
+          <a class="btn ghost" href="map.html">Open the map <span class="arr">→</span></a>
+        </div>
       </div>
+    </div>
+    <div class="scroll-cue" aria-hidden="true"></div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats-band" aria-label="Numbers">
+    <div class="wrap stats" id="stats"></div>
+  </section>
+
+  <!-- STATEMENT -->
+  <section class="wrap statement">
+    <div class="mono">· The story so far ·</div>
+    <p id="statement"></p>
+  </section>
+
+  <!-- 3D CAROUSEL -->
+  <section class="cf-sec" id="frames" aria-roledescription="carousel" aria-label="One photo from each country">
+    <div class="cf-amb" id="amb-a" aria-hidden="true"></div>
+    <div class="cf-amb b" id="amb-b" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="cf-head">
+        <div>
+          <div class="mono" style="margin-bottom:14px">· One frame per country ·</div>
+          <h2>Around the world <em>in frames</em></h2>
+        </div>
+        <div class="chips" id="cf-chips"></div>
+      </div>
+    </div>
+    <div class="cf-stage" id="stage" tabindex="0" data-cursor="Drag" aria-label="Photo carousel. Use the left and right arrow keys to move."></div>
+    <div class="wrap">
+      <div class="cf-info">
+        <div aria-live="polite">
+          <div class="cf-name" id="cf-name"></div>
+          <div class="cf-meta" id="cf-meta"></div>
+        </div>
+        <div class="cf-ctrl">
+          <div class="cf-count" id="cf-count"></div>
+          <div class="cf-btns">
+            <button id="cf-prev" aria-label="Previous country">←</button>
+            <button id="cf-play" aria-label="Pause autoplay">❚❚</button>
+            <button id="cf-next" aria-label="Next country">→</button>
+          </div>
+        </div>
+      </div>
+      <div class="cf-prog"><i id="cf-prog"></i></div>
+      <div class="cf-hint">Drag, swipe or use the arrows · click the centre photo to open it</div>
     </div>
   </section>
 
+  <!-- FILM -->
+  <section class="wrap film-sec" id="film">
+    <div class="film">
+      <video id="film-v" controls playsinline preload="none" poster="assets/video/my-world-journey.jpg" src="assets/video/my-world-journey.mp4"></video>
+      <button class="film-cover" id="film-cover" style="background-image:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.5)),url(assets/video/my-world-journey.jpg)" aria-label="Play the film My World Journey" data-cursor="Play">
+        <span class="play-ring">
+          <svg viewBox="0 0 160 160" aria-hidden="true"><defs><path id="circ" d="M80,80 m-62,0 a62,62 0 1,1 124,0 a62,62 0 1,1 -124,0"/></defs>
+            <text><textPath href="#circ">Play the film · 2:42 · My World Journey ·</textPath></text></svg>
+          <b>▶</b>
+        </span>
+      </button>
+    </div>
+    <div class="film-cap">
+      <div><div class="mono">The film · 2:42</div><h2>My World Journey</h2></div>
+      <a class="btn ghost" href="videos.html">More videos <span class="arr">→</span></a>
+    </div>
+  </section>
+
+  <!-- CHAPTERS -->
   <section class="wrap">
     <div class="sec-title"><h2>Explore the archive</h2><span class="mono">Six ways in</span></div>
-    <div class="tiles" id="tiles"></div>
+    <ul class="chapters" id="chapters"></ul>
   </section>
 
+  <!-- CONTINENTS -->
   <section class="wrap">
     <div class="sec-title"><h2>By continent</h2><a class="mono" href="countries.html">All countries →</a></div>
-    <div class="card" style="padding:26px"><div class="bars" id="bars"></div></div>
+    <div class="conts" id="conts"></div>
   </section>
 
+  <!-- THEMES MARQUEE -->
+  <section aria-label="What I look for" style="padding-bottom:20px">
+    <div class="wrap sec-title"><h2>What I look for</h2><span class="mono">Tap a theme</span></div>
+    <div class="marquee"><div class="marquee-track" id="marquee"></div></div>
+  </section>
+
+  <!-- 2027 -->
   <section class="wrap">
-    <div class="sec-title"><h2>What I look for</h2><span class="mono">Tap a theme</span></div>
-    <div class="chips" id="themes" style="justify-content:flex-start"></div>
+    <a class="next-teaser" href="2027.html" data-cursor="Go">
+      <img id="teaser-img" src="assets/img/yalla-2027.jpg" alt="" loading="lazy">
+      <div>
+        <div class="mono">Departures · Not yet boarded</div>
+        <h2>The unconquered <em>horizon</em></h2>
+        <p>2027 is calling. More wild. More remote. More unknown.</p>
+        <span class="btn">See what's next <span class="arr">→</span></span>
+      </div>
+    </a>
   </section>
 </main>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <button class="x" aria-label="Close">✕</button><button class="p" aria-label="Previous photo">‹</button><button class="n" aria-label="Next photo">›</button>
+  <img id="lb-img" alt=""><div class="cap" id="lb-cap"></div>
+</div>
+
 <script>
 (function () {
-  var T = TRAVEL.countries, visits = T.reduce(function (s, c) { return s + c.years.length; }, 0);
+  var T = TRAVEL.countries, FXR = window.FX || {}, reduce = FXR.reduce;
+  var visits = T.reduce(function (s, c) { return s + c.years.length; }, 0);
   var y0 = TRAVEL.years[0], y1 = TRAVEL.years[TRAVEL.years.length - 1];
-  document.getElementById('stats').innerHTML = [[T.length, 'Countries'], [CONT_ORDER.length, 'Continents'], [visits, 'Visits'], [Math.round((y1 - y0) / 10), 'Decades']]
-    .map(function (s) { return '<div class="card stat"><b class="grad">' + s[0] + '</b><span>' + s[1] + '</span></div>'; }).join('');
-  var ph = function (en) { var c = T.filter(function (c) { return c.en === en && c.photo; })[0]; return c ? 'assets/thumbs/' + c.photo.f : 'assets/img/museum.jpg'; };
-  var tiles = [['map.html', 'The Map', 'Every country, coloured by continent', 'assets/img/museum.jpg'],
-    ['countries.html', 'Countries', 'All 61, with flags, years and themes', ph('Bhutan')],
+  var decades = Math.round((y1 - y0) / 10);
+  var PH = T.filter(function (c) { return c.photo; });
+  var thumb = function (c) { return 'assets/thumbs/' + c.photo.f; };
+  function $(id) { return document.getElementById(id); }
+
+  document.getElementById('kick').textContent = 'Personal travel archive · ' + y0 + ' — ' + y1;
+
+  /* ---------- hero wall ---------- */
+  var cols = innerWidth < 700 ? 4 : 7, per = 6, wall = $('wall'), html = '';
+  var pool = PH.slice().sort(function (a, b) { return (a.en.charCodeAt(1) * 7 + a.en.length) % 13 - (b.en.charCodeAt(1) * 7 + b.en.length) % 13; });
+  for (var ci = 0; ci < cols; ci++) {
+    var imgs = '';
+    for (var k = 0; k < per; k++) { var c = pool[(ci * per + k) % pool.length]; imgs += '<img src="' + thumb(c) + '" alt="">'; }
+    html += '<div class="hero-col" style="--t:' + (55 + ci * 9) + 's">' + imgs + imgs + '</div>';
+  }
+  wall.innerHTML = html;
+
+  /* ---------- stats ---------- */
+  var STATS = [[T.length, 'Countries'], [CONT_ORDER.length, 'Continents'], [visits, 'Visits'], [decades, 'Decades']];
+  $('stats').innerHTML = STATS.map(function (s) { return '<div class="stat"><b class="grad" data-n="' + s[0] + '">' + s[0] + '</b><span>' + s[1] + '</span></div>'; }).join('');
+
+  /* ---------- statement ---------- */
+  var words = ('Since ' + y0 + ' I have crossed borders ' + visits + ' times, looking for tribes, ceremonies, wild landscapes and animals on five continents. This is where all of it lives.').split(' ');
+  var HL = { 'tribes,': 1, 'ceremonies,': 1, 'landscapes': 1, 'animals': 1 };
+  $('statement').innerHTML = words.map(function (w) { return '<span' + (HL[w] ? ' class="hl"' : '') + '>' + esc(w) + '</span>'; }).join(' ');
+
+  /* ---------- chapters ---------- */
+  var ph = function (en) { var c = T.filter(function (c) { return c.en === en && c.photo; })[0]; return c ? thumb(c) : 'assets/img/museum.jpg'; };
+  var CH = [['map.html', 'The Map', 'Every country, coloured by continent', 'assets/img/museum.jpg'],
+    ['countries.html', 'Countries', 'All ' + T.length + ', with flags, years and themes', ph('Bhutan')],
     ['timeline.html', 'Timeline', y0 + ' to ' + y1 + ', year by year', ph('Argentina')],
     ['gallery.html', 'Gallery', 'One photo from each stop', ph('Ethiopia')],
     ['videos.html', 'Videos', 'The film and moments in motion', 'assets/video/lion-cubs.jpg'],
     ['2027.html', '2027', 'The unconquered horizon', 'assets/img/yalla-2027.jpg']];
-  document.getElementById('tiles').innerHTML = tiles.map(function (t) {
-    return '<a class="tile" href="' + t[0] + '"><img src="' + t[3] + '" alt="" loading="lazy"><div><h3>' + t[1] + '</h3><p>' + t[2] + '</p></div></a>';
+  $('chapters').innerHTML = CH.map(function (t, i) {
+    return '<li><a href="' + t[0] + '" data-i="' + i + '"><img class="thumb" src="' + t[3] + '" alt="" loading="lazy"><span class="n">0' + (i + 1) + '</span><h3>' + t[1] + '</h3><p>' + t[2] + '</p><span class="go">→</span></a></li>';
   }).join('');
-  var max = Math.max.apply(null, CONT_ORDER.map(function (k) { return T.filter(function (c) { return c.cont === k; }).length; }));
-  document.getElementById('bars').innerHTML = CONT_ORDER.map(function (k) {
-    var n = T.filter(function (c) { return c.cont === k; }).length;
-    return '<div class="bar" style="--c:var(' + CONT[k].v + ')"><span>' + CONT[k].name + '</span><div class="track"><div class="fill" style="width:' + (n / max * 100) + '%"></div></div><b>' + n + '</b></div>';
+  if (FXR.fine) {
+    var fl = document.createElement('div'); fl.className = 'ch-float'; fl.setAttribute('aria-hidden', 'true');
+    fl.innerHTML = CH.map(function (t) { return '<img src="' + t[3] + '" alt="">'; }).join('');
+    document.body.appendChild(fl);
+    var fx = 0, fy = 0, tx = 0, ty = 0, flOn = false;
+    var chs = $('chapters');
+    chs.addEventListener('pointerover', function (e) {
+      var a = e.target.closest('a'); if (!a) return;
+      fl.classList.add('on'); flOn = true;
+      fl.querySelectorAll('img').forEach(function (im, j) { im.classList.toggle('on', j === +a.dataset.i); });
+    });
+    chs.addEventListener('pointerleave', function () { fl.classList.remove('on'); flOn = false; });
+    addEventListener('pointermove', function (e) { tx = e.clientX; ty = e.clientY; }, { passive: true });
+    (function loop() { fx += (tx - fx) * 0.12; fy += (ty - fy) * 0.12; if (flOn || fl.classList.contains('on')) fl.style.transform = 'translate(' + fx + 'px,' + fy + 'px)'; requestAnimationFrame(loop); })();
+  }
+
+  /* ---------- continents ---------- */
+  var counts = CONT_ORDER.map(function (k) { return T.filter(function (c) { return c.cont === k; }).length; });
+  var max = Math.max.apply(null, counts);
+  $('conts').innerHTML = CONT_ORDER.map(function (k, i) {
+    return '<a class="cont" href="countries.html" style="--c:var(' + CONT[k].v + ');--w:' + (counts[i] / max * 100) + '%"><b>' + counts[i] + '</b><span>' + CONT[k].name + '</span><small>' + (counts[i] === 1 ? 'country' : 'countries') + '</small><i class="meter"></i></a>';
   }).join('');
-  document.getElementById('themes').innerHTML = Object.keys(THEMES).map(function (k) {
-    return '<a class="chip" style="text-decoration:none" href="countries.html#' + k + '">' + THEMES[k] + '</a>';
-  }).join('');
+  if ('IntersectionObserver' in window) {
+    var cio = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); cio.unobserve(e.target); } }); }, { threshold: .4 });
+    document.querySelectorAll('.cont').forEach(function (el) { cio.observe(el); });
+  } else document.querySelectorAll('.cont').forEach(function (el) { el.classList.add('in'); });
+
+  /* ---------- themes marquee ---------- */
+  var TH = { tribes: 'Tribes', ceremonies: 'Ceremonies & Festivals', landscapes: 'Landscapes', animals: 'Animals' };
+  var mq = Object.keys(TH).map(function (k) { return '<a href="countries.html#' + k + '">' + esc(TH[k]) + '</a>'; }).join('');
+  $('marquee').innerHTML = mq + mq + mq + mq;
+
+  /* ---------- film ---------- */
+  var fv = $('film-v'), fc = $('film-cover');
+  fc.onclick = function () { fc.classList.add('gone'); fv.play().catch(function () {}); };
+  fv.addEventListener('play', function () { fc.classList.add('gone'); });
+
+  /* ==========================================================================
+     3D coverflow carousel
+     ========================================================================== */
+  var stage = $('stage'), list = [], cards = [], n = 0, pos = 0, target = 0, cw = 300, filter = '';
+  var dragging = false, playing = !reduce, hovering = false, inView = false, lastIdx = -1;
+  var byRecent = PH.slice().sort(function (a, b) { return (b.years[b.years.length - 1] || 0) - (a.years[a.years.length - 1] || 0); });
+
+  function wrapOff(d) { return ((d % n) + n * 1.5) % n - n / 2; }
+  function mod(i) { return ((i % n) + n) % n; }
+  function size() {
+    var w = stage.clientWidth, h = stage.clientHeight;
+    cw = Math.min(w < 700 ? w * 0.6 : w * 0.24, h * 0.7 * 0.75, 340);
+    stage.style.setProperty('--cw', cw + 'px');
+  }
+  function chips() {
+    var html = '<button class="chip' + (filter ? '' : ' on') + '" data-k="">All <b>' + PH.length + '</b></button>' + CONT_ORDER.map(function (k) {
+      var c = PH.filter(function (x) { return x.cont === k; }).length;
+      return c ? '<button class="chip' + (filter === k ? ' on' : '') + '" data-k="' + k + '" style="--c:var(' + CONT[k].v + ')"><i></i>' + CONT[k].name + ' <b>' + c + '</b></button>' : '';
+    }).join('');
+    $('cf-chips').innerHTML = html;
+  }
+  function build() {
+    list = byRecent.filter(function (c) { return !filter || c.cont === filter; });
+    n = list.length; pos = target = 0; lastIdx = -1;
+    stage.innerHTML = list.map(function (c, i) {
+      return '<figure class="cf-card" data-i="' + i + '" style="--c:' + cvar(c) + '"><span class="tagc"><i></i>' + esc(CONT[c.cont].name) + '</span><span class="zoom" aria-hidden="true">⤢</span></figure>';
+    }).join('');
+    cards = [].slice.call(stage.children);
+    chips(); render(true);
+  }
+  function render(force) {
+    for (var i = 0; i < n; i++) {
+      var el = cards[i], off = n > 1 ? wrapOff(i - pos) : 0, a = Math.abs(off), s = off < 0 ? -1 : 1;
+      if (a > 4.6) { if (el.style.visibility !== 'hidden') el.style.visibility = 'hidden'; continue; }
+      el.style.visibility = '';
+      if (!el.dataset.ld) { el.dataset.ld = 1; el.style.backgroundImage = 'url(' + thumb(list[i]) + ')'; }
+      var x = s * (Math.min(a, 1) * cw * 0.8 + Math.max(a - 1, 0) * cw * 0.42);
+      var z = -Math.min(a, 1) * cw * 0.55 - Math.max(a - 1, 0) * cw * 0.32;
+      var ry = -s * Math.min(a, 1) * 42;
+      el.style.transform = 'translate(-50%,-50%) translate3d(' + x.toFixed(1) + 'px,0,' + z.toFixed(1) + 'px) rotateY(' + ry.toFixed(2) + 'deg)';
+      el.style.zIndex = 100 - Math.round(a * 10);
+      el.style.setProperty('--shade', Math.min(a * 0.24, 0.8).toFixed(3));
+      el.style.opacity = a > 3.6 ? (4.6 - a).toFixed(2) : 1;
+    }
+    var idx = mod(Math.round(pos));
+    if (idx !== lastIdx || force) info(idx);
+  }
+  function info(idx) {
+    if (!n) return;
+    if (lastIdx >= 0 && cards[lastIdx]) cards[lastIdx].classList.remove('c');
+    cards[idx].classList.add('c'); lastIdx = idx;
+    var c = list[idx];
+    $('cf-name').innerHTML = '<span class="anim">' + flag(c) + esc(c.en) + '</span>';
+    $('cf-meta').innerHTML = '<span class="he" dir="rtl">' + esc(c.he) + '</span><span class="tag c" style="--c:' + cvar(c) + '">' + CONT[c.cont].name + '</span>' +
+      c.themes.map(function (t) { return '<span class="tag">' + THEMES[t] + '</span>'; }).join('') +
+      '<p class="yrs">' + (c.years.length ? c.years.length + (c.years.length > 1 ? ' visits · ' : ' visit · ') + c.years.join(' · ') : 'Home base') + '</p>';
+    $('cf-count').innerHTML = '<b>' + String(idx + 1).padStart(2, '0') + '</b> / ' + String(n).padStart(2, '0');
+    $('cf-prog').style.width = ((idx + 1) / n * 100) + '%';
+    amb(thumb(c));
+  }
+  var ambA = $('amb-a'), ambB = $('amb-b'), ambT;
+  function amb(src) {
+    clearTimeout(ambT);
+    ambB.style.backgroundImage = 'url(' + src + ')'; ambB.classList.add('show');
+    ambT = setTimeout(function () { ambA.style.backgroundImage = 'url(' + src + ')'; ambB.classList.remove('show'); }, 1000);
+  }
+  var animating = false;
+  function tick() {
+    if (!dragging) {
+      var d = target - pos;
+      pos = Math.abs(d) < 0.0005 ? target : pos + d * (reduce ? 1 : 0.085);
+    }
+    render();
+    if (dragging || pos !== target) requestAnimationFrame(tick); else animating = false;
+  }
+  function kick() { if (!animating) { animating = true; requestAnimationFrame(tick); } }
+  function go(step) { target = Math.round(target) + step; kick(); }
+  function goTo(i) { var off = Math.round(wrapOff(i - pos)); target = Math.round(pos) + off; kick(); }
+
+  // drag / swipe
+  var sx = 0, sy = 0, sp = 0, lx = 0, lt = 0, vx = 0, moved = false, pid = null;
+  stage.addEventListener('pointerdown', function (e) {
+    if (e.button !== 0) return;
+    pid = e.pointerId; sx = lx = e.clientX; sy = e.clientY; sp = pos; lt = performance.now(); vx = 0; moved = false;
+  });
+  stage.addEventListener('pointermove', function (e) {
+    if (pid !== e.pointerId) return;
+    var dx = e.clientX - sx;
+    if (!dragging) {
+      if (Math.abs(dx) < 6) return;
+      if (Math.abs(e.clientY - sy) > Math.abs(dx)) { pid = null; return; }
+      dragging = moved = true; stage.classList.add('drag'); try { stage.setPointerCapture(e.pointerId); } catch (er) {} kick();
+    }
+    var now = performance.now(), dt = Math.max(now - lt, 1);
+    vx = 0.8 * vx + 0.2 * ((e.clientX - lx) / dt); lx = e.clientX; lt = now;
+    pos = sp - dx / (cw * 0.7); target = pos;
+  });
+  function end(e) {
+    if (pid !== e.pointerId) return;
+    pid = null;
+    if (dragging) {
+      dragging = false; stage.classList.remove('drag');
+      target = Math.round(pos - vx * 6); kick();
+    } else if (!moved) {
+      var card = e.target.closest('.cf-card');
+      if (card) {
+        var i = +card.dataset.i;
+        if (i === mod(Math.round(pos))) openLb(i); else goTo(i);
+      }
+    }
+  }
+  stage.addEventListener('pointerup', end);
+  stage.addEventListener('pointercancel', end);
+  stage.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+    else if (e.key === 'Enter') { e.preventDefault(); openLb(mod(Math.round(pos))); }
+  });
+  var wheelAcc = 0, wheelT;
+  stage.addEventListener('wheel', function (e) {
+    if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+    e.preventDefault(); wheelAcc += e.deltaX;
+    clearTimeout(wheelT); wheelT = setTimeout(function () { wheelAcc = 0; }, 160);
+    if (Math.abs(wheelAcc) > 60) { go(wheelAcc > 0 ? 1 : -1); wheelAcc = 0; }
+  }, { passive: false });
+  stage.addEventListener('pointerenter', function () { hovering = true; });
+  stage.addEventListener('pointerleave', function () { hovering = false; });
+  $('cf-prev').onclick = function () { go(-1); };
+  $('cf-next').onclick = function () { go(1); };
+  var pb = $('cf-play');
+  function setPlay(p) { playing = p; pb.textContent = p ? '❚❚' : '▶'; pb.setAttribute('aria-label', p ? 'Pause autoplay' : 'Play autoplay'); }
+  pb.onclick = function () { setPlay(!playing); };
+  setPlay(playing);
+  $('cf-chips').addEventListener('click', function (e) { var b = e.target.closest('.chip'); if (!b) return; filter = b.dataset.k; build(); });
+  if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { inView = es[0].isIntersecting; }, { threshold: .35 }).observe(stage);
+  setInterval(function () { if (playing && inView && !hovering && !dragging && !lb.classList.contains('open') && !document.hidden) go(1); }, 3600);
+  addEventListener('resize', function () { size(); render(true); });
+
+  /* ---------- lightbox ---------- */
+  var lb = $('lb'), li = 0;
+  function openLb(i) {
+    li = mod(i); var c = list[li];
+    $('lb-img').src = 'assets/photos/' + c.photo.f; $('lb-img').alt = 'Photo from ' + c.en;
+    $('lb-cap').innerHTML = flag(c) + esc(c.en) + ' <span>' + yearsText(c) + '</span>';
+    lb.classList.add('open'); if (FXR.lenis) FXR.lenis.stop();
+    lb.querySelector('.x').focus();
+  }
+  function closeLb() { lb.classList.remove('open'); if (FXR.lenis) FXR.lenis.start(); goTo(li); stage.focus({ preventScroll: true }); }
+  lb.querySelector('.x').onclick = closeLb;
+  lb.querySelector('.p').onclick = function () { openLb(li - 1); };
+  lb.querySelector('.n').onclick = function () { openLb(li + 1); };
+  lb.addEventListener('click', function (e) { if (e.target === lb) closeLb(); });
+  document.addEventListener('keydown', function (e) {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLb(); else if (e.key === 'ArrowLeft') openLb(li - 1); else if (e.key === 'ArrowRight') openLb(li + 1);
+  });
+
+  size(); build();
+
+  /* ==========================================================================
+     GSAP: intro, parallax, counters, statement
+     ========================================================================== */
+  var words = [].slice.call(document.querySelectorAll('#statement span'));
+  function light(p) { var k = Math.round(p * words.length); words.forEach(function (w, i) { w.classList.toggle('lit', i < k); }); }
+  if (!window.gsap || reduce) { light(1); return; }
+  gsap.registerPlugin(ScrollTrigger);
+
+  var tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
+  tl.from('#title .w > span', { yPercent: 115, rotate: 4, duration: 1.5, stagger: 0.09 }, 0.15)
+    .from('.hero .kicker', { opacity: 0, x: -30, duration: 1.2 }, 0.5)
+    .from('.hero-row > *', { opacity: 0, y: 30, duration: 1.2, stagger: 0.12 }, 0.75)
+    .from('.hero-wall', { opacity: 0, scale: 1.15, duration: 2.4, ease: 'power2.out' }, 0);
+
+  gsap.to('.hero-in', { yPercent: -30, opacity: 0, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+  gsap.to('.hero-wall', { scale: 1.18, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+
+  document.querySelectorAll('.stat b').forEach(function (b) {
+    var o = { v: 0 }, to = +b.dataset.n;
+    if (b.getBoundingClientRect().top > innerHeight * 0.9) b.textContent = '0';
+    gsap.to(o, { v: to, duration: 2.2, ease: 'power3.out', scrollTrigger: { trigger: b, start: 'top 90%', once: true }, onUpdate: function () { b.textContent = Math.round(o.v); } });
+  });
+
+  ScrollTrigger.create({ trigger: '#statement', start: 'top 85%', end: 'bottom 45%', scrub: true, onUpdate: function (s) { light(s.progress); } });
+
+  gsap.fromTo('#teaser-img', { yPercent: -8 }, { yPercent: 8, ease: 'none', scrollTrigger: { trigger: '.next-teaser', start: 'top bottom', end: 'bottom top', scrub: true } });
+  gsap.from('.cf-stage', { opacity: 0, y: 80, rotateX: 18, duration: 1.4, ease: 'expo.out', scrollTrigger: { trigger: '.cf-sec', start: 'top 70%', once: true } });
 })();
 </script>
 </body>
