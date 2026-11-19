@@ -58,7 +58,8 @@
       <div class="route-hud">
         <div class="route-title">
           <h2>Forty years of <em>flights</em></h2>
-          <p>Every trip leaves from home. Keep scrolling and the map fills in, in the order I first got there.</p>
+          <p>Every trip leaves from home. Watch the map fill in, in the order I first got there.</p>
+          <button class="btn ghost route-ctl" id="r-ctl" type="button"></button>
         </div>
         <div class="route-year" id="r-year" aria-live="off">1986</div>
         <div class="route-now">
@@ -254,7 +255,7 @@
     h += '<circle class="home-ring" cx="' + HOME.x + '" cy="' + HOME.y + '" r="4"/><circle class="home-dot" cx="' + HOME.x + '" cy="' + HOME.y + '" r="3.4"/><circle class="plane-dot" id="plane" r="3" cx="' + HOME.x + '" cy="' + HOME.y + '"/>';
     svg.innerHTML = h;
     arcs = stops.map(function (s, i) { var el = $('arc' + i); var L = el.getTotalLength(); lens.push(L); el.style.strokeDasharray = L + ' ' + L; el.style.strokeDashoffset = L; return el; });
-    routeReady = true; tick();
+    routeReady = true; route(reduce ? 1 : rp); if (reduce) { rDone = true; ctlUI(); } rKick();
   }
   function loadMap() {
     if (loadMap.done) return; loadMap.done = 1;
@@ -320,6 +321,30 @@
     return false;
   }
 
+  /* the route plays by itself once it is on screen; pauses when you leave, Pause/Play/Play again button */
+  var rp = reduce ? 1 : 0, rPlaying = !reduce, rInView = false, rpLast = 0, RDUR = 22, rRaf = 0, rDone = reduce, ctl = $('r-ctl');
+  function ctlUI() {
+    ctl.innerHTML = rDone ? icon('replay') + 'Play again' : rPlaying ? icon('pause') + 'Pause' : icon('play') + 'Play';
+  }
+  function rStep(t) {
+    rRaf = 0;
+    var dt = Math.min(.05, (t - (rpLast || t)) / 1000); rpLast = t;
+    if (routeReady && rInView && rPlaying && !document.hidden) {
+      rp = Math.min(1, rp + dt / RDUR); route(rp);
+      if (rp >= 1) { rDone = true; rPlaying = false; ctlUI(); }
+    }
+    if (rInView && rPlaying) rRaf = requestAnimationFrame(rStep); else rpLast = 0;
+  }
+  function rKick() { if (!rRaf && rInView && rPlaying) rRaf = requestAnimationFrame(rStep); }
+  ctl.onclick = function () {
+    if (rDone) { rp = 0; rDone = false; rPlaying = true; if (routeReady) route(0); }
+    else rPlaying = !rPlaying;
+    ctlUI(); rKick();
+  };
+  ctlUI();
+  if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { rInView = es[0].isIntersecting; rKick(); }, { threshold: .55 }).observe($('route'));
+  else { rInView = true; }
+
   /* ================= 6 · THEMES PAN ================= */
   var star = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></svg>';
   var pan = $('pan'), panSec = pan.parentNode;
@@ -350,9 +375,6 @@
     // statement words light in reading order
     var sp = prog(stEl, vh * .85, vh * .45), n = Math.round(sp * wordEls.length);
     if (n !== tick.n) { wordEls.forEach(function (w, i) { w.classList.toggle('lit', reduce || i < n); }); tick.n = n; }
-    // route
-    var rr = routeSec.getBoundingClientRect();
-    if (rr.top < vh && rr.bottom > 0) { var p = Math.max(0, Math.min(1, -rr.top / (rr.height - vh))); if (route(p)) more = true; }
     // themes pan moves with scroll only
     var pr = panSec.getBoundingClientRect();
     if (pr.top < vh && pr.bottom > 0 && !reduce) { var pp = (vh - pr.top) / (vh + pr.height); pan.style.transform = 'translate3d(' + (-pp * pan.scrollWidth / 3) + 'px,0,0)'; }

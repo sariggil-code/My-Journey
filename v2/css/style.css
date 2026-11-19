@@ -140,15 +140,15 @@ footer.site-foot{margin-top:40px;padding:34px 0 40px;border-top:1px solid var(--
 @media (max-width:700px){.hero h1{font-size:clamp(3.6rem,19vw,5.4rem)}.hero-in{padding-bottom:5vh}.ring-wrap{top:104px;right:auto;left:50%;margin:0 0 0 calc(var(--rw) / -2)}}
 
 /* 2 · statement */
-.statement{padding:clamp(96px,14vw,170px) 0 clamp(70px,10vw,120px)}
+.statement{padding-block:clamp(96px,14vw,170px) clamp(70px,10vw,120px)}
 .statement p{font-family:var(--serif);font-size:clamp(2rem,4.6vw,3.9rem);line-height:1.1;margin:0;max-width:24ch;letter-spacing:-.01em}
 .statement p span{color:rgba(243,237,226,.18);transition:color .35s var(--ease-out)}
 .statement p span.lit{color:var(--ink)}
 .statement p span.lit.hl{color:var(--a1);font-style:italic}
 
 /* 3 · route (peak) */
-.route{position:relative;height:300vh;padding:0}
-.route-pin{position:sticky;top:0;height:100svh;overflow:hidden;background:radial-gradient(ellipse 80% 70% at 55% 45%,#2c261e,var(--bg) 80%)}
+.route{position:relative;height:100svh;min-height:620px;padding:0}
+.route-pin{position:relative;height:100%;overflow:hidden;background:radial-gradient(ellipse 80% 70% at 55% 45%,#2c261e,var(--bg) 80%)}
 .route-cam{position:absolute;left:50%;top:50%;width:min(170vw,2200px);aspect-ratio:1530/800;transform-origin:0 0;will-change:transform}
 #route-svg svg{width:100%;height:100%;overflow:visible}
 #route-svg path.land{fill:#3b352c;stroke:#1d1915;stroke-width:.5}
@@ -168,6 +168,7 @@ footer.site-foot{margin-top:40px;padding:34px 0 40px;border-top:1px solid var(--
 .route-hud::after{content:"";position:absolute;inset:0 0 auto 0;height:34%;background:linear-gradient(180deg,rgba(29,25,21,.85),transparent);z-index:-1}
 .route-title h2{font-size:clamp(2.2rem,5vw,4rem)}
 .route-title p{color:var(--muted);margin:10px 0 0;max-width:34ch}
+.route-ctl{pointer-events:auto;margin-top:16px;min-height:44px;padding:10px 18px;background:rgba(29,25,21,.55)}
 .route-year{grid-column:2;grid-row:1;text-align:right;font:400 clamp(4rem,11vw,9.5rem)/.85 var(--serif);font-variant-numeric:tabular-nums;letter-spacing:-.03em}
 .route-now{grid-column:1/-1;grid-row:3;display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap}
 .route-card{display:flex;gap:16px;align-items:flex-end;min-height:120px}
@@ -186,9 +187,11 @@ footer.site-foot{margin-top:40px;padding:34px 0 40px;border-top:1px solid var(--
 .route-count{font-variant-numeric:tabular-nums}
 @media (max-width:700px){
   .route-cam{width:300vw}
-  .route-hud{padding-top:84px;grid-template-columns:1fr;grid-template-rows:auto auto 1fr auto}
-  .route-year{grid-column:1;grid-row:2;text-align:left;font-size:4.2rem}
-  .route-now{grid-row:4}
+  .route-hud{padding-top:80px;grid-template-columns:1fr auto;grid-template-rows:auto 1fr auto}
+  .route-title p{display:none}
+  .route-ctl{margin-top:10px}
+  .route-year{grid-column:2;grid-row:1;text-align:right;font-size:3.4rem}
+  .route-now{grid-row:3}
   .route-tally{justify-content:flex-start}
   .route-card{min-height:96px}
 }
@@ -232,7 +235,7 @@ footer.site-foot{margin-top:40px;padding:34px 0 40px;border-top:1px solid var(--
 ::view-transition-group(photo){animation-duration:.45s;animation-timing-function:var(--ease-out)}
 
 /* 5 · film */
-.film-sec{padding:60px 0}
+.film-sec{padding-block:60px}
 .film{position:relative;border-radius:var(--r);overflow:hidden;background:#000;box-shadow:var(--shadow);border:1px solid var(--line)}
 .film video{width:100%;aspect-ratio:16/9;object-fit:contain;background:#000}
 .film-cover{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;border:0;padding:0;cursor:pointer;color:#fff;background-color:#000;background-position:center;background-size:cover;transition:opacity .4s var(--ease-out)}
@@ -279,7 +282,7 @@ footer.site-foot{margin-top:40px;padding:34px 0 40px;border-top:1px solid var(--
 }
 
 /* 8 · departure board (close) */
-.board-sec{padding:70px 0 30px}
+.board-sec{padding-block:70px 30px}
 .board{position:relative;border-radius:var(--r);overflow:hidden;border:1px solid var(--line);isolation:isolate;padding:clamp(28px,5vw,56px)}
 .board > img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;filter:brightness(.6) saturate(.9)}
 .board::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(29,25,21,.92) 30%,rgba(29,25,21,.4))}

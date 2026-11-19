@@ -18,7 +18,7 @@
   var P = { // lucide-style strokes, one weight
     arrowR: '<path d="M5 12h14M13 6l6 6-6 6"/>', arrowL: '<path d="M19 12H5M11 6l-6 6 6 6"/>',
     menu: '<path d="M4 7h16M4 12h16M4 17h16"/>', x: '<path d="M18 6 6 18M6 6l12 12"/>',
-    upR: '<path d="M7 17 17 7M8 7h9v9"/>', play: '<path d="M8 5.5v13l10.5-6.5z"/>', shuffle: '<path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/>'
+    upR: '<path d="M7 17 17 7M8 7h9v9"/>', pause: '<path d="M9 5v14M15 5v14"/>', replay: '<path d="M3 12a9 9 0 1 0 2.6-6.4L3 8"/><path d="M3 3v5h5"/>', play: '<path d="M8 5.5v13l10.5-6.5z"/>', shuffle: '<path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/>'
   };
   window.icon = function (n) { return '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">' + P[n] + '</svg>'; };
 
