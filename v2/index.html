@@ -1,0 +1,593 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Where I Have Been · Personal Travel Archive</title>
+<meta name="description" content="Forty years of travel out of Israel: 60 countries on five continents, the route, the photos, the film and what comes next.">
+<meta name="theme-color" content="#0a0908">
+<meta property="og:title" content="Where I Have Been">
+<meta property="og:description" content="Forty years of flights, drawn by your scroll.">
+<meta property="og:image" content="../assets/video/my-world-journey.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  /* hero entrance: one authored moment. lead (headline) first, support after */
+  .js-in .hero h1 .w > span{animation:rise .9s var(--ease-out) both;animation-delay:var(--d)}
+  .js-in .hero-row{animation:fade .8s var(--ease-out) .55s both}
+  .js-in .plane-back{animation:fade 1.4s var(--ease-out) both}
+  .js-in .print{animation:printIn 1s var(--ease-out) both;animation-delay:var(--pd)}
+  @keyframes rise{from{transform:translateY(105%)}}
+  @keyframes fade{from{opacity:0}}
+  @keyframes printIn{from{opacity:0;translate:0 40px}}
+  @media (prefers-reduced-motion:reduce){.js-in .hero h1 .w>span,.js-in .hero-row,.js-in .plane-back,.js-in .print{animation:none}}
+</style>
+<script src="../assets/data.js"></script>
+<script src="js/site.js"></script>
+</head>
+<body class="home">
+<main>
+  <!-- 1 · HERO: back wall · headline · foreground prints -->
+  <section class="hero" aria-label="Intro">
+    <div class="plane plane-back" id="wall" aria-hidden="true"></div>
+    <div class="plane plane-shade" aria-hidden="true"></div>
+    <div class="wrap hero-in">
+      <h1 id="title"><span class="w"><span style="--d:.05s">Where</span></span> <span class="w"><span style="--d:.13s">I</span></span><br><span class="w"><span style="--d:.24s">have</span></span> <span class="w"><span style="--d:.3s"><em>been</em></span></span></h1>
+      <div class="hero-row">
+        <p>Forty years of trips out of Israel. Tribes, ceremonies, wild landscapes and animals, one frame from every stop.</p>
+        <div class="btns">
+          <a class="btn" href="#route">Follow the route</a>
+          <a class="btn ghost" href="#film">Watch the film</a>
+        </div>
+      </div>
+    </div>
+    <div class="plane plane-front" id="prints" aria-hidden="true"></div>
+  </section>
+
+  <!-- 2 · STATEMENT -->
+  <section class="wrap statement" aria-label="The story so far">
+    <p id="statement"></p>
+  </section>
+
+  <!-- 3 · ROUTE (peak) -->
+  <section class="route" id="route" aria-label="The route, 1986 to 2026">
+    <div class="route-pin">
+      <svg id="route-svg" viewBox="40 225 1530 800" preserveAspectRatio="xMidYMid meet" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%"></svg>
+      <div class="route-hud">
+        <div class="route-title">
+          <h2>Forty years of <em>flights</em></h2>
+          <p>Every trip leaves from home. Keep scrolling and the map fills in, in the order I first got there.</p>
+        </div>
+        <div class="route-year" id="r-year" aria-live="off">1986</div>
+        <div class="route-now">
+          <div class="route-card" id="r-card"></div>
+          <div>
+            <div class="route-tally" id="r-tally"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · FRAMES: 3D carousel -->
+  <section class="cf-sec" id="frames" aria-roledescription="carousel" aria-label="One photo from each country">
+    <div class="cf-amb" id="amb-a" aria-hidden="true"></div>
+    <div class="cf-amb b" id="amb-b" aria-hidden="true"></div>
+    <div class="wrap">
+      <div class="cf-head">
+        <div>
+          <h2>Around the world in frames</h2>
+          <p>Throw them. One photo per country; tap the one in front to open it.</p>
+        </div>
+        <div class="chips" id="cf-chips"></div>
+      </div>
+    </div>
+    <div class="cf-stage" id="stage" tabindex="0" aria-label="Photo carousel. Left and right arrow keys move, Enter opens the photo."></div>
+    <div class="drag-tag" id="drag-tag" aria-hidden="true">Drag</div>
+    <div class="wrap">
+      <div class="cf-info">
+        <div aria-live="polite">
+          <div class="cf-name" id="cf-name"></div>
+          <div class="cf-meta" id="cf-meta"></div>
+        </div>
+        <div class="cf-ctrl">
+          <div class="cf-count" id="cf-count"></div>
+          <div class="cf-btns">
+            <button id="cf-prev" aria-label="Previous country"></button>
+            <button id="cf-next" aria-label="Next country"></button>
+          </div>
+        </div>
+      </div>
+      <div class="cf-prog"><i id="cf-prog"></i></div>
+    </div>
+  </section>
+
+  <!-- 5 · FILM -->
+  <section class="wrap film-sec" id="film">
+    <div class="film">
+      <video id="film-v" controls playsinline preload="none" poster="../assets/video/my-world-journey.jpg" src="../assets/video/my-world-journey.mp4"></video>
+      <button class="film-cover" id="film-cover" style="background-image:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.45)),url(../assets/video/my-world-journey.jpg)" aria-label="Play the film My World Journey">
+        <span class="pb" id="pb"></span>
+      </button>
+    </div>
+    <div class="film-cap">
+      <div><h2>My World Journey</h2><p class="meta">The film, 2:42</p></div>
+      <a class="btn ghost" href="videos.html" id="more-videos">More videos</a>
+    </div>
+  </section>
+
+  <!-- 6 · THEMES pan -->
+  <section aria-label="What I look for" class="pan-sec">
+    <div class="wrap sec-title"><h2>What I go looking for</h2></div>
+    <div class="pan"><div class="pan-track" id="pan"></div></div>
+  </section>
+
+  <!-- 7 · ARCHIVE INDEX -->
+  <section class="wrap">
+    <div class="sec-title"><h2>The archive</h2></div>
+    <ul class="chapters" id="chapters"></ul>
+  </section>
+
+  <!-- 8 · DEPARTURE BOARD (close) -->
+  <section class="wrap board-sec" aria-label="Next departure">
+    <div class="board" id="board">
+      <img src="../assets/img/yalla-2027.jpg" alt="" loading="lazy">
+      <h2>Next departure: <span class="acc">2027</span></h2>
+      <p>More wild. More remote. More unknown. The board is still deciding where.</p>
+      <div class="flaps" id="flaps" aria-live="polite"></div>
+      <div class="acts">
+        <a class="btn" href="2027.html" id="see-next">See what's next</a>
+        <button class="btn ghost" id="reflip" type="button">Pick another</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Photo viewer">
+  <button class="x" aria-label="Close"></button><button class="p" aria-label="Previous photo"></button><button class="n" aria-label="Next photo"></button>
+  <div class="cap" id="lb-cap"></div>
+</div>
+
+<script>
+(function () {
+  var T = TRAVEL.countries, FXR = window.FX, reduce = FXR.reduce, A = ASSET;
+  var PH = T.filter(function (c) { return c.photo; });
+  var thumb = function (c) { return A + 'thumbs/' + c.photo.f; };
+  function $(id) { return document.getElementById(id); }
+  var y0 = TRAVEL.years[0], y1 = TRAVEL.years[TRAVEL.years.length - 1];
+  var away = T.filter(function (c) { return c.years.length; });
+  var visits = away.reduce(function (s, c) { return s + c.years.length; }, 0);
+  var HOME = T.filter(function (c) { return !c.years.length; })[0];
+  document.documentElement.classList.add('js-in');
+
+  // icons into buttons
+  $('cf-prev').innerHTML = icon('arrowL'); $('cf-next').innerHTML = icon('arrowR');
+  $('pb').innerHTML = icon('play');
+  $('more-videos').insertAdjacentHTML('beforeend', icon('arrowR'));
+  $('see-next').insertAdjacentHTML('beforeend', icon('arrowR'));
+  $('reflip').insertAdjacentHTML('afterbegin', icon('shuffle'));
+  var lb = $('lb');
+  var lbImg = document.createElement('img'); lbImg.id = 'lb-img'; lbImg.alt = ''; lb.insertBefore(lbImg, $('lb-cap'));
+  var lbReady = false;
+  lb.querySelector('.x').innerHTML = icon('x'); lb.querySelector('.p').innerHTML = icon('arrowL'); lb.querySelector('.n').innerHTML = icon('arrowR');
+
+  /* ================= 1 · HERO ================= */
+  var mobile = innerWidth < 700;
+  var cols = mobile ? 4 : 7, per = 6, html = '';
+  var pool = PH.slice().sort(function (a, b) { return (a.en.charCodeAt(1) * 7 + a.en.length) % 13 - (b.en.charCodeAt(1) * 7 + b.en.length) % 13; });
+  for (var ci = 0; ci < cols; ci++) {
+    var imgs = '';
+    for (var k = 0; k < per; k++) { var c = pool[(ci * per + k) % pool.length]; imgs += '<img src="' + thumb(c) + '" alt="" decoding="async">'; }
+    html += '<div class="hero-col" style="--t:' + (80 + ci * 11) + 's">' + imgs + imgs + '</div>';
+  }
+  $('wall').innerHTML = html;
+  var byName = function (n) { return PH.filter(function (c) { return c.en === n; })[0]; };
+  // foreground prints: [country, width, left%, top%, rotate, depth, hide on mobile]
+  var PR = mobile
+    ? [['Ethiopia', '44vw', 52, 13, 5, 1.0, 0], ['Namibia', '34vw', 4, 24, -6, .7, 0]]
+    : [['Ethiopia', 'clamp(180px,17vw,280px)', 69, 14, 5, 1.0, 0], ['Namibia', 'clamp(150px,13vw,220px)', 84, 49, -4, .75, 0], ['Bhutan', 'clamp(120px,10vw,170px)', 55, 12, -7, .5, 1]];
+  $('prints').innerHTML = PR.map(function (p, i) {
+    var c = byName(p[0]) || PH[i];
+    return '<figure class="print' + (p[6] ? ' hide-m' : '') + '" data-depth="' + p[5] + '" style="--w:' + p[1] + ';left:' + p[2] + '%;top:' + p[3] + '%;rotate:' + p[4] + 'deg;--pd:' + (.35 + i * .12) + 's"><img src="' + thumb(c) + '" alt=""><figcaption>' + esc(c.en) + '</figcaption></figure>';
+  }).join('');
+  var prints = [].slice.call(document.querySelectorAll('.print'));
+  var ptx = 0, pty = 0, pcx = 0, pcy = 0;
+  if (FXR.fine && !reduce) addEventListener('pointermove', function (e) { ptx = e.clientX / innerWidth - .5; pty = e.clientY / innerHeight - .5; }, { passive: true });
+
+  /* ================= 2 · STATEMENT ================= */
+  var words = ('Since ' + y0 + ', ' + visits + ' visits to ' + away.length + ' countries, chasing tribes, ceremonies, wild landscapes and animals on five continents. This is the record.').split(' ');
+  var HL = { 'tribes,': 1, 'ceremonies,': 1, 'landscapes': 1, 'animals': 1 };
+  $('statement').innerHTML = words.map(function (w) { return '<span' + (HL[w] ? ' class="hl"' : '') + '>' + esc(w) + '</span>'; }).join(' ');
+  var wordEls = [].slice.call(document.querySelectorAll('#statement span'));
+
+  /* ================= 3 · ROUTE ================= */
+  var stops = [], routeReady = false, svg = $('route-svg'), arcs = [], lens = [], camX = HOME.x, camY = HOME.y, camW = 1530, lastK = -2;
+  (function order() {
+    var yrs = {};
+    away.forEach(function (c) { (yrs[c.years[0]] = yrs[c.years[0]] || []).push(c); });
+    Object.keys(yrs).sort().forEach(function (y) {
+      var left = yrs[y].slice(), from = HOME;
+      while (left.length) {
+        left.sort(function (a, b) { return Math.hypot(a.x - from.x, a.y - from.y) - Math.hypot(b.x - from.x, b.y - from.y); });
+        var nx = left.shift(); stops.push({ c: nx, from: from, year: +y }); from = nx;
+      }
+    });
+  })();
+  function arcD(a, b) {
+    var mx = (a.x + b.x) / 2, my = (a.y + b.y) / 2, d = Math.hypot(b.x - a.x, b.y - a.y);
+    var lift = Math.min(d * .32, 170);
+    return 'M' + a.x + ',' + a.y + ' Q' + mx + ',' + (my - lift) + ' ' + b.x + ',' + b.y;
+  }
+  function buildRoute() {
+    var byIso = {};
+    away.forEach(function (c) { byIso[c.iso] = c; });
+    var h = '<path class="grat" d="' + (MAPDATA.grat || '') + '"/>';
+    MAPDATA.paths.forEach(function (p) {
+      var c = byIso[p.id];
+      h += c ? '<path class="vis" data-iso="' + p.id + '" style="--c:' + cvar(c) + '" d="' + p.d + '"/>' : '<path class="land" d="' + p.d + '"/>';
+    });
+    stops.forEach(function (s, i) { h += '<path class="arc" id="arc' + i + '" d="' + arcD(s.from, s.c) + '"/>'; });
+    stops.forEach(function (s, i) { h += '<circle class="stop" id="st' + i + '" cx="' + s.c.x + '" cy="' + s.c.y + '" r="2.4"/>'; });
+    h += '<circle class="home-ring" cx="' + HOME.x + '" cy="' + HOME.y + '" r="4"/><circle class="home-dot" cx="' + HOME.x + '" cy="' + HOME.y + '" r="3.4"/><circle class="plane-dot" id="plane" r="3" cx="' + HOME.x + '" cy="' + HOME.y + '"/>';
+    svg.innerHTML = h;
+    arcs = stops.map(function (s, i) { var el = $('arc' + i); var L = el.getTotalLength(); lens.push(L); el.style.strokeDasharray = L + ' ' + L; el.style.strokeDashoffset = L; return el; });
+    routeReady = true; tick();
+  }
+  function loadMap() {
+    if (loadMap.done) return; loadMap.done = 1;
+    var s = document.createElement('script'); s.src = A + 'map-data.js'; s.onload = buildRoute; document.body.appendChild(s);
+  }
+  if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { if (es[0].isIntersecting) loadMap(); }, { rootMargin: '150% 0px' }).observe($('route'));
+  else loadMap();
+
+  var tallyEl = $('r-tally'), yearEl = $('r-year'), cardEl = $('r-card'), planeEl;
+  function tally(n) {
+    var got = stops.slice(0, n).map(function (s) { return s.c; });
+    tallyEl.innerHTML = '<span class="route-count"><b>' + n + '</b>&nbsp;of ' + stops.length + ' countries</span>' + CONT_ORDER.map(function (k) {
+      var m = got.filter(function (c) { return c.cont === k; }).length;
+      return '<span style="--c:var(' + CONT[k].v + ')"><i></i>' + CONT[k].name + ' <b>' + m + '</b></span>';
+    }).join('');
+  }
+  function card(s) {
+    if (!s) { cardEl.innerHTML = '<div class="ph none"><img src="' + A + 'flags/' + HOME.a2 + '.svg" alt=""></div><div><div class="nm">' + flag(HOME) + 'Home</div><div class="sub">Israel. Every trip starts here.</div></div>'; return; }
+    var c = s.c;
+    cardEl.innerHTML = (c.photo ? '<div class="ph" style="background-image:url(' + thumb(c) + ')"></div>' : '<div class="ph none"><img src="' + A + 'flags/' + c.a2 + '.svg" alt=""></div>') +
+      '<div><div class="nm">' + flag(c) + esc(c.en) + '</div><div class="sub">First visit ' + s.year + (c.years.length > 1 ? ', back ' + (c.years.length - 1) + (c.years.length > 2 ? ' more times' : ' more time') : '') + '</div></div>';
+    if (!reduce) { cardEl.classList.remove('swap'); void cardEl.offsetWidth; cardEl.classList.add('swap'); }
+  }
+  card(null); tally(0);
+
+  function route(p) {
+    if (!routeReady) return;
+    var N = stops.length, intro = .05, outro = .08;
+    var q = Math.max(0, Math.min(1, (p - intro) / (1 - intro - outro)));
+    var f = q * N, k = Math.min(N - 1, Math.floor(f)), fr = f - k;
+    var fly = Math.min(1, fr / .72); fly = 1 - Math.pow(1 - fly, 2.2);
+    if (q >= 1) { k = N - 1; fly = 1; }
+    for (var i = 0; i < N; i++) {
+      var off = i < k ? 0 : i === k ? lens[i] * (1 - fly) : lens[i];
+      if (arcs[i]._o !== off) { arcs[i].style.strokeDashoffset = off; arcs[i]._o = off; }
+      var live = i === k && p > intro && q < 1;
+      if (arcs[i]._l !== live) { arcs[i].classList.toggle('live', live); arcs[i]._l = live; }
+    }
+    var arrived = p <= intro ? 0 : k + (fly >= 1 ? 1 : 0);
+    if (arrived !== lastK) {
+      for (var j = 0; j < N; j++) {
+        var on = j < arrived;
+        $('st' + j).classList.toggle('on', on);
+        var pth = svg.querySelector('path.vis[data-iso="' + stops[j].c.iso + '"]');
+        if (pth && on) pth.classList.add('on');
+      }
+      if (arrived < lastK) svg.querySelectorAll('path.vis.on').forEach(function (el) {
+        var idx = -1; stops.forEach(function (s, x) { if (s.c.iso === el.dataset.iso && idx < 0) idx = x; });
+        if (idx >= arrived) el.classList.remove('on');
+      });
+      lastK = arrived;
+      card(arrived ? stops[arrived - 1] : null); tally(arrived);
+    }
+    var cur = stops[k], pt = p <= intro ? { x: HOME.x, y: HOME.y } : arcs[k].getPointAtLength(lens[k] * fly);
+    planeEl = planeEl || $('plane');
+    planeEl.setAttribute('cx', pt.x); planeEl.setAttribute('cy', pt.y);
+    yearEl.textContent = p <= intro ? y0 : cur.year;
+    // camera: overview at the start and end, follows the flight in between
+    var vw = innerWidth, vh = innerHeight, aspect = vh / vw;
+    var overW = Math.max(1530, 800 / aspect) * (vw < 700 ? 1 : 1.02);
+    var followW = vw < 700 ? 560 : 900;
+    var zin = Math.min(1, Math.max(0, (p - .01) / .07)), zout = Math.min(1, Math.max(0, (p - (1 - outro - .02)) / .06));
+    var z = zin * (1 - zout);
+    var tw = overW + (followW - overW) * z;
+    var tx = (795 + (pt.x - 795) * z), ty = (625 + (pt.y - 625) * z);
+    var e = reduce ? 1 : .12;
+    camW += (tw - camW) * e; camX += (tx - camX) * e; camY += (ty - camY) * e;
+    var h = camW * aspect;
+    svg.setAttribute('viewBox', (camX - camW / 2).toFixed(1) + ' ' + (camY - h / 2).toFixed(1) + ' ' + camW.toFixed(1) + ' ' + h.toFixed(1));
+    return Math.abs(tw - camW) > .5 || Math.abs(tx - camX) > .2 || Math.abs(ty - camY) > .2;
+  }
+
+  /* ================= 6 · THEMES PAN ================= */
+  var star = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4z"/></svg>';
+  var pan = $('pan'), panSec = pan.parentNode;
+  var once = Object.keys(THEMES).map(function (k) { return '<a href="countries.html#' + k + '">' + esc(THEMES[k]) + star + '</a>'; }).join('');
+  pan.innerHTML = once + once + once;
+
+  /* ================= scroll loop ================= */
+  var hero = document.querySelector('.hero'), heroIn = document.querySelector('.hero-in'), wall = $('wall'), routeSec = $('route'), stEl = $('statement');
+  var ticking = false;
+  function prog(el, startOff, endOff) {
+    var r = el.getBoundingClientRect();
+    return Math.max(0, Math.min(1, (startOff - r.top) / (r.height + startOff - endOff)));
+  }
+  function tick() {
+    ticking = false;
+    var vh = innerHeight, more = false;
+    // hero planes: back slow, front fast, pointer adds a little depth
+    var hp = Math.min(1, scrollY / vh);
+    pcx += (ptx - pcx) * .08; pcy += (pty - pcy) * .08;
+    if (hp < 1.05) {
+      if (!reduce) {
+        wall.style.transform = 'rotate(-10deg) translate3d(' + (pcx * -14) + 'px,' + (hp * 60 + pcy * -10) + 'px,0)';
+        heroIn.style.transform = 'translate3d(0,' + (hp * -90) + 'px,0)'; heroIn.style.opacity = 1 - hp * 1.1;
+        prints.forEach(function (el) { var d = +el.dataset.depth; el.style.transform = 'translate3d(' + (pcx * 40 * d) + 'px,' + (hp * -320 * d + pcy * 30 * d) + 'px,0)'; });
+      }
+      if (Math.abs(ptx - pcx) > .001 || Math.abs(pty - pcy) > .001) more = true;
+    }
+    // statement words light in reading order
+    var sp = prog(stEl, vh * .85, vh * .45), n = Math.round(sp * wordEls.length);
+    if (n !== tick.n) { wordEls.forEach(function (w, i) { w.classList.toggle('lit', reduce || i < n); }); tick.n = n; }
+    // route
+    var rr = routeSec.getBoundingClientRect();
+    if (rr.top < vh && rr.bottom > 0) { var p = Math.max(0, Math.min(1, -rr.top / (rr.height - vh))); if (route(p)) more = true; }
+    // themes pan moves with scroll only
+    var pr = panSec.getBoundingClientRect();
+    if (pr.top < vh && pr.bottom > 0 && !reduce) { var pp = (vh - pr.top) / (vh + pr.height); pan.style.transform = 'translate3d(' + (-pp * pan.scrollWidth / 3) + 'px,0,0)'; }
+    if (more) req();
+  }
+  function req() { if (!ticking) { ticking = true; requestAnimationFrame(tick); } }
+  addEventListener('scroll', req, { passive: true });
+  addEventListener('pointermove', function () { if (scrollY < innerHeight) req(); }, { passive: true });
+  addEventListener('resize', req);
+  req();
+
+  /* ================= 4 · CAROUSEL ================= */
+  var stage = $('stage'), list = [], cards = [], n = 0, pos = 0, vel = 0, target = 0, cw = 300, filter = '', lastIdx = -1;
+  var dragging = false, raf = 0, springK = 170, damp = 26;
+  var byRecent = PH.slice().sort(function (a, b) { return (b.years[b.years.length - 1] || 0) - (a.years[a.years.length - 1] || 0); });
+  function wrapOff(d) { return n < 2 ? 0 : ((d % n) + n * 1.5) % n - n / 2; }
+  function mod(i) { return ((i % n) + n) % n; }
+  function size() { var w = stage.clientWidth, h = stage.clientHeight; cw = Math.min(w < 700 ? w * .6 : w * .23, h * .7 * .75, 330); stage.style.setProperty('--cw', cw + 'px'); }
+  function chips() {
+    $('cf-chips').innerHTML = '<button class="chip' + (filter ? '' : ' on') + '" data-k="" aria-pressed="' + !filter + '">All <b>' + PH.length + '</b></button>' + CONT_ORDER.map(function (k) {
+      var c = PH.filter(function (x) { return x.cont === k; }).length;
+      return c ? '<button class="chip' + (filter === k ? ' on' : '') + '" data-k="' + k + '" aria-pressed="' + (filter === k) + '" style="--c:var(' + CONT[k].v + ')"><i></i>' + CONT[k].name + ' <b>' + c + '</b></button>' : '';
+    }).join('');
+  }
+  function build() {
+    list = byRecent.filter(function (c) { return !filter || c.cont === filter; });
+    n = list.length; pos = target = vel = 0; lastIdx = -1;
+    stage.innerHTML = list.map(function (c, i) { return '<figure class="cf-card" data-i="' + i + '"></figure>'; }).join('');
+    cards = [].slice.call(stage.children);
+    chips(); render(true);
+  }
+  function render(force) {
+    for (var i = 0; i < n; i++) {
+      var el = cards[i], off = wrapOff(i - pos), a = Math.abs(off), s = off < 0 ? -1 : 1;
+      if (a > 4.6) { if (!el._h) { el.style.visibility = 'hidden'; el._h = 1; } continue; }
+      if (el._h || el._h === undefined) { el.style.visibility = ''; el._h = 0; }
+      if (!el._ld) { el._ld = 1; el.style.backgroundImage = 'url(' + thumb(list[i]) + ')'; }
+      var x = s * (Math.min(a, 1) * cw * .8 + Math.max(a - 1, 0) * cw * .42);
+      var z = -Math.min(a, 1) * cw * .55 - Math.max(a - 1, 0) * cw * .32;
+      el.style.transform = 'translate(-50%,-50%) translate3d(' + x.toFixed(1) + 'px,0,' + z.toFixed(1) + 'px) rotateY(' + (-s * Math.min(a, 1) * 42).toFixed(2) + 'deg)';
+      el.style.zIndex = 100 - Math.round(a * 10);
+      el.style.setProperty('--shade', Math.min(a * .24, .8).toFixed(3));
+      el.style.opacity = a > 3.6 ? (4.6 - a).toFixed(2) : 1;
+    }
+    var idx = mod(Math.round(pos));
+    if (idx !== lastIdx || force) info(idx);
+  }
+  function info(idx) {
+    if (!n) return;
+    if (cards[lastIdx]) cards[lastIdx].classList.remove('c');
+    cards[idx].classList.add('c'); lastIdx = idx;
+    var c = list[idx];
+    $('cf-name').innerHTML = '<span' + (reduce ? '' : ' class="anim"') + '>' + flag(c) + esc(c.en) + '</span>';
+    $('cf-meta').innerHTML = '<span class="he" dir="rtl" lang="he">' + esc(c.he) + '</span><span class="tag c" style="--c:' + cvar(c) + '">' + CONT[c.cont].name + '</span>' +
+      c.themes.map(function (t) { return '<span class="tag">' + THEMES[t] + '</span>'; }).join('') +
+      '<span class="mono">' + c.years.length + (c.years.length > 1 ? ' visits · ' : ' visit · ') + c.years.join(' · ') + '</span>';
+    $('cf-count').innerHTML = '<b>' + (idx + 1) + '</b> of ' + n;
+    $('cf-prog').style.setProperty('--p', ((idx + 1) / n).toFixed(3));
+    amb(thumb(c));
+  }
+  var ambA = $('amb-a'), ambB = $('amb-b'), ambT;
+  function amb(src) { clearTimeout(ambT); ambB.style.backgroundImage = 'url(' + src + ')'; ambB.classList.add('show'); ambT = setTimeout(function () { ambA.style.backgroundImage = 'url(' + src + ')'; ambB.classList.remove('show'); }, 820); }
+  // release phase: a spring seeded with the throw velocity; buttons get a critically damped spring (no bounce)
+  var last = 0;
+  function step(t) {
+    var dt = Math.min(.032, (t - (last || t)) / 1000 || .016); last = t;
+    if (!dragging) {
+      if (reduce) { pos = target; vel = 0; }
+      else { var a = springK * (target - pos) - damp * vel; vel += a * dt; pos += vel * dt; }
+      if (Math.abs(target - pos) < .0008 && Math.abs(vel) < .002) { pos = target; vel = 0; }
+    }
+    render();
+    if (dragging || pos !== target) raf = requestAnimationFrame(step); else { raf = 0; last = 0; }
+  }
+  function kick() { if (!raf) raf = requestAnimationFrame(step); }
+  function go(d) { damp = 2 * Math.sqrt(springK); target = Math.round(target) + d; kick(); }
+  function goTo(i) { damp = 2 * Math.sqrt(springK); target = Math.round(pos) + Math.round(wrapOff(i - pos)); kick(); }
+
+  // track phase: the photos are the finger, 1:1
+  var sx = 0, sy = 0, sp = 0, samples = [], moved = false, pid = null, unit = 1;
+  stage.addEventListener('pointerdown', function (e) {
+    if (e.button !== 0) return;
+    pid = e.pointerId; sx = e.clientX; sy = e.clientY; sp = pos; moved = false; samples = [[performance.now(), e.clientX]]; unit = cw * .8;
+    vel = 0; target = pos; $('drag-tag').classList.add('press');
+  });
+  stage.addEventListener('pointermove', function (e) {
+    if (FXR.fine) { var dt = $('drag-tag'); dt.style.transform = 'translate(' + e.clientX + 'px,' + e.clientY + 'px)'; }
+    if (pid !== e.pointerId) return;
+    var dx = e.clientX - sx;
+    if (!dragging) {
+      if (Math.abs(dx) < 6) return;
+      if (Math.abs(e.clientY - sy) > Math.abs(dx)) { pid = null; return; }
+      dragging = moved = true; stage.classList.add('drag'); try { stage.setPointerCapture(e.pointerId); } catch (er) {} kick();
+    }
+    pos = sp - dx / unit; target = pos;
+    samples.push([performance.now(), e.clientX]); if (samples.length > 6) samples.shift();
+  });
+  function end(e) {
+    if (pid !== e.pointerId) return;
+    pid = null; $('drag-tag').classList.remove('press');
+    if (dragging) {
+      dragging = false; stage.classList.remove('drag');
+      var a = samples[0], b = samples[samples.length - 1], dt = Math.max(16, b[0] - a[0]);
+      var v = -((b[1] - a[1]) / dt) * 1000 / unit; // cards per second
+      if (performance.now() - b[0] > 90) v = 0;
+      v = Math.max(-14, Math.min(14, v));
+      vel = v; damp = 2 * Math.sqrt(springK) * .78; // a little bounce only after a throw
+      target = Math.round(pos + v * .32); kick();
+    } else if (!moved) {
+      var card = e.target.closest('.cf-card');
+      if (card) { var i = +card.dataset.i; if (i === mod(Math.round(pos))) openLb(i, card); else goTo(i); }
+    }
+  }
+  stage.addEventListener('pointerup', end);
+  stage.addEventListener('pointercancel', end);
+  stage.addEventListener('pointerenter', function () { if (FXR.fine) $('drag-tag').classList.add('on'); });
+  stage.addEventListener('pointerleave', function () { $('drag-tag').classList.remove('on'); });
+  stage.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+    else if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLb(mod(Math.round(pos)), cards[mod(Math.round(pos))]); }
+  });
+  var wheelAcc = 0, wheelT;
+  stage.addEventListener('wheel', function (e) {
+    if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+    e.preventDefault(); wheelAcc += e.deltaX; clearTimeout(wheelT); wheelT = setTimeout(function () { wheelAcc = 0; }, 160);
+    if (Math.abs(wheelAcc) > 60) { go(wheelAcc > 0 ? 1 : -1); wheelAcc = 0; }
+  }, { passive: false });
+  $('cf-prev').onclick = function () { go(-1); };
+  $('cf-next').onclick = function () { go(1); };
+  $('cf-chips').addEventListener('click', function (e) { var b = e.target.closest('.chip'); if (!b) return; filter = b.dataset.k; build(); });
+  addEventListener('resize', function () { size(); render(true); });
+
+  /* lightbox: the photo morphs out of its card */
+  var li = 0, srcCard = null;
+  function vt(fn) { if (document.startViewTransition && !reduce) return document.startViewTransition(fn); fn(); return null; }
+  function fill(i) {
+    li = mod(i); var c = list[li], im = $('lb-img');
+    im.src = A + 'photos/' + c.photo.f; im.alt = 'Photo from ' + c.en;
+    $('lb-cap').innerHTML = flag(c) + esc(c.en) + ' <span>' + yearsText(c) + '</span>';
+    return im.decode ? im.decode().catch(function () {}) : Promise.resolve();
+  }
+  function openLb(i, cardEl) {
+    srcCard = cardEl;
+    if (cardEl) cardEl.style.viewTransitionName = 'photo';
+    var im = $('lb-img');
+    var ready = fill(i);
+    ready.then(function () {
+      vt(function () {
+        if (cardEl) cardEl.style.viewTransitionName = '';
+        im.style.viewTransitionName = 'photo';
+        lb.classList.add('open'); if (FXR.lenis) FXR.lenis.stop();
+      });
+      lb.querySelector('.x').focus({ preventScroll: true });
+    });
+  }
+  function closeLb() {
+    goTo(li);
+    var im = $('lb-img'), target = cards[li];
+    var t = vt(function () {
+      im.style.viewTransitionName = '';
+      if (target) target.style.viewTransitionName = 'photo';
+      lb.classList.remove('open'); if (FXR.lenis) FXR.lenis.start();
+    });
+    var clear = function () { if (target) target.style.viewTransitionName = ''; };
+    if (t) t.finished.then(clear, clear); else clear();
+    stage.focus({ preventScroll: true });
+  }
+  lb.querySelector('.x').onclick = closeLb;
+  lb.querySelector('.p').onclick = function () { $('lb-img').style.viewTransitionName = ''; fill(li - 1).then(function(){ $('lb-img').style.viewTransitionName = 'photo'; }); };
+  lb.querySelector('.n').onclick = function () { $('lb-img').style.viewTransitionName = ''; fill(li + 1).then(function(){ $('lb-img').style.viewTransitionName = 'photo'; }); };
+  lb.addEventListener('click', function (e) { if (e.target === lb) closeLb(); });
+  document.addEventListener('keydown', function (e) {
+    if (!lb.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLb(); else if (e.key === 'ArrowLeft') lb.querySelector('.p').click(); else if (e.key === 'ArrowRight') lb.querySelector('.n').click();
+  });
+  size(); build();
+
+  /* ================= 5 · FILM ================= */
+  var fv = $('film-v'), fc = $('film-cover');
+  fc.onclick = function () { fc.classList.add('gone'); fv.play().catch(function () {}); };
+  fv.addEventListener('play', function () { fc.classList.add('gone'); });
+
+  /* ================= 7 · INDEX ================= */
+  var ph = function (en) { var c = byName(en); return c ? thumb(c) : A + 'img/museum.jpg'; };
+  var CH = [['map.html', 'The map', 'Every country, coloured by continent', A + 'img/museum.jpg'],
+    ['countries.html', 'Countries', 'All ' + T.length + ', with flags, years and themes', ph('Bhutan')],
+    ['timeline.html', 'Timeline', y0 + ' to ' + y1 + ', year by year', ph('Argentina')],
+    ['gallery.html', 'Gallery', 'One photo from each stop', ph('Ethiopia')],
+    ['videos.html', 'Videos', 'The film and moments in motion', A + 'video/lion-cubs.jpg'],
+    ['2027.html', '2027', 'The unconquered horizon', A + 'img/yalla-2027.jpg']];
+  $('chapters').innerHTML = CH.map(function (t, i) {
+    return '<li><a href="' + t[0] + '" data-i="' + i + '"><img class="thumb" src="' + t[3] + '" alt="" loading="lazy"><h3>' + t[1] + '</h3><p>' + t[2] + '</p><span class="go">' + icon('upR') + '</span></a></li>';
+  }).join('');
+  if (FXR.fine) {
+    var fl = document.createElement('div'); fl.className = 'ch-float'; fl.setAttribute('aria-hidden', 'true');
+    fl.innerHTML = CH.map(function (t) { return '<img src="' + t[3] + '" alt="" loading="lazy">'; }).join('');
+    document.body.appendChild(fl);
+    var fx = 0, fy = 0, tx = 0, ty = 0, flRaf = 0, chs = $('chapters');
+    function flLoop() { fx += (tx - fx) * .2; fy += (ty - fy) * .2; fl.style.transform = 'translate(' + fx.toFixed(1) + 'px,' + fy.toFixed(1) + 'px)'; flRaf = (Math.abs(tx - fx) > .3 || Math.abs(ty - fy) > .3) ? requestAnimationFrame(flLoop) : 0; }
+    chs.addEventListener('pointerover', function (e) {
+      var a = e.target.closest('a'); if (!a) return;
+      if (!fl.classList.contains('on')) { fx = tx; fy = ty; }
+      fl.classList.add('on');
+      fl.querySelectorAll('img').forEach(function (im, j) { im.classList.toggle('on', j === +a.dataset.i); });
+    });
+    chs.addEventListener('pointerleave', function () { fl.classList.remove('on'); });
+    chs.addEventListener('pointermove', function (e) { tx = e.clientX; ty = e.clientY; if (!flRaf) flRaf = requestAnimationFrame(flLoop); });
+  }
+
+  /* ================= 8 · DEPARTURE BOARD ================= */
+  var dests = ['Papua New Guinea', 'Mongolia', 'Madagascar', 'Greenland', 'Vanuatu', 'Chad', 'Kyrgyzstan', 'Suriname', 'Mali', 'Socotra', 'Svalbard', 'Tajikistan'];
+  var visitedNames = {}; T.forEach(function (c) { visitedNames[c.en] = 1; });
+  dests = dests.filter(function (d) { return !visitedNames[d]; });
+  var COLS = innerWidth < 600 ? 13 : 18;
+  dests = dests.filter(function (d) { return d.length <= COLS; });
+  var ROWS = [['Flight', 'YALLA 27'], ['From', 'TEL AVIV'], ['To', dests[0]], ['Status', 'BOARDING SOON']];
+  var CHARS = ' ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  $('flaps').innerHTML = ROWS.map(function (r, i) {
+    var cells = ''; for (var j = 0; j < COLS; j++) cells += '<span class="fc' + (i === 2 ? ' hl' : '') + '"></span>';
+    return '<div class="flap-row"><span>' + r[0] + '</span><div class="flap-cells" data-r="' + i + '" aria-label="' + r[0] + ': ' + esc(r[1]) + '">' + cells + '</div></div>';
+  }).join('');
+  function setRow(i, text, delay) {
+    var row = document.querySelector('.flap-cells[data-r="' + i + '"]'); text = text.toUpperCase().slice(0, COLS);
+    row.setAttribute('aria-label', ROWS[i][0] + ': ' + text);
+    [].slice.call(row.children).forEach(function (cell, j) {
+      var want = text[j] || ' ';
+      if (reduce) { cell.textContent = want; return; }
+      var steps = 4 + Math.floor(Math.random() * 6) + j % 3, s = 0;
+      setTimeout(function flipOnce() {
+        cell.classList.remove('flip'); void cell.offsetWidth; cell.classList.add('flip');
+        cell.textContent = ++s >= steps ? want : CHARS[Math.floor(Math.random() * CHARS.length)];
+        if (s < steps) setTimeout(flipOnce, 70);
+      }, delay + j * 22);
+    });
+  }
+  var flipped = false, di = 0;
+  function flipAll() { ROWS.forEach(function (r, i) { setRow(i, r[1], [0, 160, 260, 380][i]); }); }
+  if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { if (es[0].isIntersecting && !flipped) { flipped = true; flipAll(); } }, { threshold: .45 }).observe($('board'));
+  else flipAll();
+  function pool() {
+    if (pool.list) return pool.list;
+    if (!window.MAPDATA) return dests;
+    var vis = {}; T.forEach(function (c) { vis[c.iso] = 1; });
+    var seen = {}, out = MAPDATA.paths.filter(function (p) { if (!p.n || vis[p.id] || seen[p.n] || p.n.length > COLS) return false; seen[p.n] = 1; return true; }).map(function (p) { return p.n; });
+    return (pool.list = out.length ? out : dests);
+  }
+  $('reflip').onclick = function () { var L = pool(), d = L[Math.floor(Math.random() * L.length)]; ROWS[2][1] = d; setRow(2, d, 0); };
+})();
+</script>
+</body>
+</html>

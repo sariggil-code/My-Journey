@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0a0908">
+<title>2027 · Where I Have Been</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<script src="../assets/data.js"></script>
+<script src="../assets/map-data.js"></script>
+<script src="js/site.js"></script>
+</head>
+<body>
+<main class="wrap">
+  <div class="next-hero">
+    <img src="../assets/img/yalla-2027.jpg" alt="YALA 2027: Remote. Wild. Real. Same me, bigger dreams.">
+    <h1>2027: the unconquered <span class="acc">horizon</span></h1>
+    <p>2027 is calling. More wild. More remote. More unknown. Yalla 2027, here we come.</p>
+  </div>
+
+  <section>
+    <div class="card roulette">
+      <h2>Where to next?</h2>
+      <div class="slot" id="slot">Spin to find out</div>
+      <button class="btn" id="spin">Spin</button>
+      <p style="color:var(--muted);font-size:.9rem;margin:16px 0 0" id="left"></p>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-title"><h2>Same me, bigger dreams</h2></div>
+    <div class="wall">
+      <img src="../assets/img/wall-market.jpg" alt="Bargaining at a bustling market stall" loading="lazy">
+      <img src="../assets/img/wall-tea.jpg" alt="Sharing tea at a Vietnam tea circle" loading="lazy">
+      <video src="../assets/video/warriors-dance.mp4" poster="../assets/video/warriors-dance.jpg" autoplay loop muted playsinline aria-label="Warriors dancing around an iron cauldron"></video>
+      <img src="../assets/img/wall-carnival.jpg" alt="Dancing at Rio carnival" loading="lazy">
+      <img src="../assets/img/wall-hunters.jpg" alt="Standing among tribal hunters with bows" loading="lazy">
+      <img src="../assets/img/wall-polar-bear.jpg" alt="High-fiving a polar bear" loading="lazy">
+      <img src="../assets/img/wall-bear-hug.jpg" alt="Getting a bear hug from a bear" loading="lazy">
+    </div>
+  </section>
+</main>
+<script>
+(function () {
+  var visited = {};
+  TRAVEL.countries.forEach(function (c) { visited[c.iso] = 1; });
+  var seen = {}, pool = MAPDATA.paths.filter(function (p) { if (!p.n || visited[p.id] || seen[p.n]) return false; seen[p.n] = 1; return true; }).map(function (p) { return p.n; });
+  var slot = document.getElementById('slot'), btn = document.getElementById('spin'), busy = false;
+  document.getElementById('left').textContent = pool.length + ' countries and territories still unvisited.';
+  btn.onclick = function () {
+    if (busy || !pool.length) return;
+    busy = true; btn.disabled = true;
+    var n = 0, total = 22, reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
+    (function tick() {
+      slot.textContent = pool[Math.floor(Math.random() * pool.length)];
+      if (reduce || ++n >= total) { slot.innerHTML = '<em>' + esc(slot.textContent) + '</em>'; busy = false; btn.disabled = false; btn.textContent = 'Spin again'; return; }
+      setTimeout(tick, 50 + n * n * .9);
+    })();
+  };
+})();
+</script>
+</body>
+</html>
